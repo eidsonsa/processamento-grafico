@@ -1,11 +1,10 @@
 void setup() {
   size(400, 300);
   
-
 }
 
 void draw() {
-  // clear out old frames
+
     background(220, 220, 220);
     
     // circulo grande
@@ -13,19 +12,25 @@ void draw() {
     stroke(0, 0, 256);
     circle(200, 150, 200);
     
+    
     // circulo pequeno
     fill(220, 220, 220);
     stroke(0, 0, 256);
-    circle(275, 150, 50);
+    pushMatrix();
+    translate(200, 150);
+    rotate(radians(frameCount * 1.5 % 360));
+    circle(75, 0, 50);
     
     // ponto
-    //stroke(256,0,0);
-    //point(300,150);
-    color red = color(256, 0, 0);
-    set(300, 150, red);
+    stroke(256,0,0);
+    fill(256, 0, 0);
+    pushMatrix();
+    translate(75, 0);
+    rotate(radians(frameCount * 1.5  % 360));
+    circle(25, 0, 3);
+    popMatrix();
     
-    
-
-    
+    popMatrix();
+           
     
 }
