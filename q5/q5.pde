@@ -10,6 +10,9 @@ void draw() {
     background(256, 256, 256);
     translate(width/2, height/2, 0);
     
+    //rotateY(radians(-30));
+    //rotateZ(radians(30));
+    
     // fazer eixo Y
     stroke(0, 0, 256);
     line(0, -350, 0, 350);
@@ -34,7 +37,7 @@ void draw() {
       // fazer animacao do circulo menor
       pushMatrix();
       
-        rotateZ(radians(frameCount * 1.5 % 360));
+        rotateZ(radians(frameCount % 360));
         translate(0, -100);
         
         // desenhar circulo menor
@@ -47,7 +50,7 @@ void draw() {
           // desenhar ponto vermelho
           pushMatrix();
           
-            rotateZ(radians(frameCount * 1.5  % 360));
+            rotateZ(radians(frameCount * 4  % 360));
             stroke(256,0,0);
             ellipse(0, -25, 4, 4);
           
