@@ -12,7 +12,7 @@ int quadrante;
 void setup(){
   size(800,600);
   background(153);
-  teta = 0;
+  teta = PI/2;
   velocity = PI/(frameRate*4);
   diam = 5;
   xR = 0;
@@ -28,7 +28,7 @@ void setupCoordinateSystem(){
   line(0,-width,0,width);
   stroke(0,127,255);
   line(height,0,-height,0);
-  scale(-1,1);
+  scale(-1,-1);
 }
 
 void createCircle(float x, float y, float diam){
@@ -39,12 +39,12 @@ void createCircle(float x, float y, float diam){
 
 void draw(){
   setupCoordinateSystem();
-  xC =  xR + radious*cos(teta);
-  yC = radious*sin(teta);
+  xC =  xR + radious*sin(teta);
+  yC = radious*cos(teta);
   createCircle(xC,yC,diam);
-  if((yC >= 0.1 && quadrante == -1) || (yC <= 0 && quadrante == 1)){
+  if((yC <= -0.1 && quadrante == 1) || (yC >= 0 && quadrante == -1)){
     radious *= 2;
-    xR = xC - radious;
+    xR = xC - (radious*quadrante);
     quadrante *= -1;
   }
   teta += velocity;
