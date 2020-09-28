@@ -6,11 +6,14 @@ PVector gravidade;
 
 void setup() {
   size(1000, 600);
-  posicao = new PVector(30, 270);
-  velocidade = new PVector(8, -10);
-  gravidade = new PVector(0, 0.5);
+  frameRate(25);
+  posicao = new PVector(radius, height - radius);
+  velocidade = new PVector(10, -10);
 
 }
+
+// 4s - 25fps - 100 frames
+// 1000 pixels em 100 frames - 10 pixels por frame 
 
 // ponto (0,0) é o superior esquerdo
 // ponto(0, 300) é onde a bolinha começa
@@ -23,7 +26,6 @@ void draw() {
     rect(0, 300, 1000, 600);
     
     posicao.add(velocidade);
-    velocidade.add(gravidade);
     
     if ((posicao.x > width - radius) || (posicao.x < radius)){
       velocidade.x *= -1;
@@ -31,17 +33,12 @@ void draw() {
     
     if (posicao.y < 100){
       posicao.y = 100;
-      velocidade.y *= -1;
+      velocidade.y = -10.5;
     }
     
-    if (posicao.y > 300 - radius){
-      posicao.y = 300 - radius;
-      if (velocidade.y < 0){
-        velocidade.y = 10.5;
-      }
-      else{
-        velocidade.y = -10;
-      }
+    if (posicao.y > height - radius){
+      posicao.y = height - radius;
+      velocidade.y = -10;
     }
     
     fill(0, 0, 250);
