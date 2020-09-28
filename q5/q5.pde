@@ -11,7 +11,7 @@ void draw() {
     translate(width/2, height/2, 0);
     
     //rotateY(radians(-30));
-    //rotateZ(radians(30));
+    rotateZ(radians(30));
     
     // fazer eixo Y
     stroke(0, 0, 256);
@@ -20,6 +20,10 @@ void draw() {
     // fazer eixo X
     stroke(256, 0, 0);
     line(-350, 0, 350, 0);
+    
+    stroke(0, 256, 0);
+    line(0, 0, 0, 0);
+    
        
        
     // desenhar circunferencia maior
