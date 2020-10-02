@@ -8,7 +8,7 @@ void setup() {
   size(1200, 600);
   frameRate(60);
   posicao = new PVector(radius, height - radius);
-  velocidade = new PVector(9.5, -10);
+  velocidade = new PVector(9.5, -9.5);
 
 }
 
@@ -43,7 +43,7 @@ void draw() {
         velocidade.y = 10.5; // como está descendo, velocidade + gravidade
       }
       else{
-        velocidade.y = -10;
+        velocidade.y = -9.5;
       }
     }
     
