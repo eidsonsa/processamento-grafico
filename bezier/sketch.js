@@ -1,10 +1,22 @@
+var action;
+
+function chooseAction(act){
+  if (act == 'criarponto'){
+    action = 'ponto'
+  }
+}
+
 function setup(){
-  var canvas = createCanvas(200, 200);
-  canvas.parent('sketch-div');
-  background(32);
+  var canvas = createCanvas(700, 700);
+//  canvas.parent('sketch-div');
+  background(220, 220, 220);
 }
 
 function draw(){
-  fill(255);
-  ellipse(mouseX, mouseY, 25, 25);
+
+  if (mouseIsPressed == true && mouseButton == LEFT && action == 'ponto'){
+    fill(0);
+    ellipse(mouseX, mouseY, 10, 10);
+    action = ''
+  }
 }
