@@ -48,7 +48,6 @@ var index = -1;
 function adicionarBotao(indice){
   action = 'adicionar';
   index = indice;
-  console.log(index)
 }
 
 // var evaluationFactor = document.getElementById('evaluationFactor')
@@ -58,11 +57,12 @@ var evaluationFactor = 0.001;
 
 function keyPressed(){
 if (action == 'curva'){
-    //curvas[atual].shift()
-    document.getElementById('lista-curvas').innerHTML += '<li>' + 'Curva '+ (atual + 1) + ':' + (curvas[atual].length) +
-     '<button onClick="adicionarBotao(atual)">adicionar ponto</button>' + atual + '</li>';
+  document.getElementById('lista-curvas').innerHTML = '';
+  for (var i = 0; i < curvas.length; i++){
+    document.getElementById('lista-curvas').innerHTML += '<li>' + 'Curva '+ (i + 1) + ':' + (curvas[i].length) +
+    '<button onClick="adicionarBotao(' + i + ')">adicionar ponto</button>' + '</li>';
+  }
     action = '';
-    console.log(curvas)
  }
 }
 
@@ -112,6 +112,7 @@ function interpolation(startPoint, endPoint, factor){
 }
 
 function deCasteljau (stageControlPoints, factor){
+  //console.log(stageControlPoints)
   if(stageControlPoints.length == 1){
     fill(141, 7, 246);
     stroke(141, 7, 246);
