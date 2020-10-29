@@ -31,21 +31,14 @@ function ativarPoligono(){
 
 var pts = [];
 
-clickFalso = true;
 
-function mouseClicked() {
+function canvasMouseClicked() {
   if (action == 'curva'){
     curvas[qtdCurvas - 1].push([mouseX, mouseY]);
   }
   if (action == 'adicionar'){
-    if (!clickFalso){
       curvas[index].push([mouseX, mouseY]);
       action = ''
-    }
-    clickFalso = false;
-  }
-  if (action == ''){
-    clickFalso = true;
   }
   return false;
 }
@@ -58,14 +51,18 @@ function adicionarBotao(indice){
   console.log(index)
 }
 
+// var evaluationFactor = document.getElementById('evaluationFactor')
+//var evaluationFactor = select('evaluationFactor');
+
 var evaluationFactor = 0.001;
 
 function keyPressed(){
 if (action == 'curva'){
-    curvas[atual].shift()
+    //curvas[atual].shift()
     document.getElementById('lista-curvas').innerHTML += '<li>' + 'Curva '+ (atual + 1) + ':' + (curvas[atual].length) +
      '<button onClick="adicionarBotao(atual)">adicionar ponto</button>' + atual + '</li>';
     action = '';
+    console.log(curvas)
  }
 }
 
@@ -74,6 +71,7 @@ if (action == 'curva'){
 function setup(){
   var canvas = createCanvas(700, 700);
   canvas.parent('sketch-div');
+  canvas.mouseClicked(canvasMouseClicked);
   background(212, 219, 245);
 }
 
