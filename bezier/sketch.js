@@ -2,10 +2,12 @@ var action;
 var curvas = []
 var qtdCurvas = 0
 var atual;
+//Implementar pegar o indice atual direto do html
+var index = 0
 
-var pontosOn = false;
-var curvasOn = false;
-var poligonosOn = false;
+var pontosOn = true;
+var curvasOn = true;
+var poligonosOn = true;
 
 function chooseAction(act){
 
@@ -37,23 +39,22 @@ function canvasMouseClicked() {
     curvas[qtdCurvas - 1].push([mouseX, mouseY]);
   }
   if (action == 'adicionar'){
-      curvas[index].push([mouseX, mouseY]);
+      curvas[addButton].push([mouseX, mouseY]);
       action = ''
   }
   return false;
 }
 
-var index = -1;
+var addButton = -1;
 
 function adicionarBotao(indice){
   action = 'adicionar';
-  index = indice;
+  addButton = indice;
 }
-
-// var evaluationFactor = document.getElementById('evaluationFactor')
-//var evaluationFactor = select('evaluationFactor');
-
-var evaluationFactor = 0.001;
+//Pegar o evaluationFactor do HTML
+//var evaluationFactor = 1/(document.getElementById('evaluationFactor').value);
+//log(evaluationFactor);
+evaluationFactor = 0.001;
 
 function keyPressed(){
 if (action == 'curva'){
@@ -77,32 +78,31 @@ function setup(){
 
 function draw(){
   background(212, 219, 245);
-  if (pontosOn){
-    for (var i = 0; i < curvas.length; i++){
-      for (var j = 0; j < curvas[i].length; j++){
-        fill(0, 41, 250)
-        stroke(0, 41, 250);
-        ellipse(curvas[i][j][0], curvas[i][j][1], 10, 10);
-      }
-    }
-
-  }
-  if (curvasOn){
-    for (var i = 0; i < curvas.length; i++){
-      for (var factor = 0; factor <= 1; factor = factor + evaluationFactor){
-        deCasteljau(curvas[i], factor);
-      }
+  if (pontosOn && curvas.length > 0){
+    for (var j = 0; j < curvas[index].length; j++){
+      fill(0, 41, 250)
+      stroke(0, 41, 250);
+      ellipse(curvas[index][j][0], curvas[index][j][1], 10, 10);
     }
   }
-  if (poligonosOn){
-    for (var i = 0; i < curvas.length; i++){
-      for (var j = 1; j < curvas[i].length; j++){
-        fill(255, 255, 5);
-        stroke(255, 255, 5);
-        line(curvas[i][j - 1][0], curvas[i][j - 1][1], curvas[i][j][0], curvas[i][j][1]);
-      }
+  if (curvasOn && curvas.length > index && curvas[index].length > 1){
+    fill(141, 7, 246);
+    stroke(141, 7, 246);
+    var currentPoint = curvas[index][0]
+    var lastPoint = curvas[index][curvas[index].length-1];
+    for (var factor = evaluationFactor; factor <= 1; factor += evaluationFactor){
+      var nextPoint = deCasteljau(curvas[index],factor);
+      line(currentPoint[0], currentPoint[1], nextPoint[0], nextPoint[1]);
+      currentPoint = nextPoint;
     }
-
+    line(currentPoint[0], currentPoint[1], lastPoint[0], lastPoint[1]);
+  }
+  if (poligonosOn && curvas.length > index && curvas[index].length > 1){
+    for (var j = 1; j < curvas[index].length; j++){
+      fill(255, 255, 5);
+      stroke(255, 255, 5);
+      line(curvas[index][j - 1][0], curvas[index][j - 1][1], curvas[index][j][0], curvas[index][j][1]);
+    }
   }
 
 }
@@ -114,15 +114,13 @@ function interpolation(startPoint, endPoint, factor){
 function deCasteljau (stageControlPoints, factor){
   //console.log(stageControlPoints)
   if(stageControlPoints.length == 1){
-    fill(141, 7, 246);
-    stroke(141, 7, 246);
-    ellipse(stageControlPoints[0][0],stageControlPoints[0][1],3,3);
+    return stageControlPoints[0];
   }else {
     var nextStageControlPoints = [];
     for(cont = 0; cont < stageControlPoints.length -1;++cont){
       var subControlPoint = interpolation(stageControlPoints[cont], stageControlPoints[cont+1], factor);
       nextStageControlPoints.push(subControlPoint);
     }
-    deCasteljau(nextStageControlPoints, factor);
+     return deCasteljau(nextStageControlPoints, factor);
   }
 }
