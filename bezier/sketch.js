@@ -1,4 +1,4 @@
-var action;
+var action = 'curva';
 var curvas = []
 var qtdCurvas = 0
 var atual;
@@ -10,9 +10,8 @@ var curvasOn = true;
 var poligonosOn = true;
 
 function chooseAction(act){
-
   if (act == 'criarcurva'){
-    action = 'curva';
+    //action = 'curva';
     curvas[qtdCurvas] = [];
     atual = qtdCurvas;
     qtdCurvas++;
@@ -36,7 +35,7 @@ var pts = [];
 
 function canvasMouseClicked() {
   if (action == 'curva'){
-    curvas[qtdCurvas - 1].push([mouseX, mouseY]);
+      curvas[qtdCurvas - 1].push([mouseX, mouseY]);
   }
   if (action == 'adicionar'){
       curvas[addButton].push([mouseX, mouseY]);
@@ -44,7 +43,16 @@ function canvasMouseClicked() {
   }
   return false;
 }
-
+function mouseDragged(){
+  if(curvas[index].length > 0){
+    var indexControlPoint = findControlPoint(curvas[index],[mouseX,mouseY]);
+    if(indexControlPoint != null){
+      curvas[index][indexControlPoint][0] = mouseX;
+      curvas[index][indexControlPoint][1] = mouseY;
+    }
+  }
+  return false;
+} 
 var addButton = -1;
 
 function adicionarBotao(indice){
@@ -57,7 +65,7 @@ function adicionarBotao(indice){
 evaluationFactor = 0.001;
 
 function keyPressed(){
-if (action == 'curva'){
+if (action == 'curva' ){
   document.getElementById('lista-curvas').innerHTML = '';
   for (var i = 0; i < curvas.length; i++){
     document.getElementById('lista-curvas').innerHTML += '<li>' + 'Curva '+ (i + 1) + ':' + (curvas[i].length) +
@@ -123,4 +131,13 @@ function deCasteljau (stageControlPoints, factor){
     }
      return deCasteljau(nextStageControlPoints, factor);
   }
+}
+
+function findControlPoint(curve, point){
+  for(cont = 0; cont < curve.length; ++cont){
+    if(Math.sqrt(Math.pow((curve[cont][0] - point[0]),2) + Math.pow((curve[cont][1] - point[1]),2) <= 1000)){  //1000 é o quanto o mouse pode se distanciar do ponto
+      return cont;
+    }
+  }
+  return null;
 }
