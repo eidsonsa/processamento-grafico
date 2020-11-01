@@ -5,6 +5,7 @@ var atual;
 //Implementar pegar o indice atual direto do html
 var index = 0
 var addButton = -1;
+//var evaluationFactor = 0.001
 
 var pontosOn = true;
 var curvasOn = true;
@@ -56,13 +57,23 @@ if (action == 'curva'){
     '<button onClick="adicionarBotao(' + i + ')">adicionar ponto</button>' + '</li>';
   }
     action = '';
+    evaluationFactor = 1 / document.getElementById('evaluationFactor').value
  }
 }
 
+
 //Pegar o evaluationFactor do HTML
-//var evaluationFactor = 1/(document.getElementById('evaluationFactor').value);
+window.onload=function(){var evaluationFactorHTML = document.getElementById('evaluationFactor');
+
+evaluationFactor.onchange = function(){
+  evaluationFactor = 1 / evaluationFactorHTML.value 
+    
+}
+}
+
+//evaluationFactor = 1/(document.getElementById('evaluationFactor').value);
 //log(evaluationFactor);
-evaluationFactor = 0.001;
+//evaluationFactor = 0.001;
 
 function interpolation(startPoint, endPoint, factor){
   return [ (1 - factor)*startPoint[0] + factor*endPoint[0] , (1 - factor)*startPoint[1] + factor*endPoint[1] ];
@@ -119,5 +130,5 @@ function draw(){
       line(curvas[index][j - 1][0], curvas[index][j - 1][1], curvas[index][j][0], curvas[index][j][1]);
     }
   }
-
+  console.log(evaluationFactor)
 }
