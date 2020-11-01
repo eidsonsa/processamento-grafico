@@ -4,7 +4,7 @@ var qtdCurvas = 0
 var atual;
 //Implementar pegar o indice atual direto do html
 var index = 0
-var addButton = -1;
+var indiceaadicionar = -1;
 //var evaluationFactor = 0.001
 
 var pontosOn = true;
@@ -33,14 +33,28 @@ function chooseAction(act){
   }
 }
 
+var indicearemover = -1
+
 function canvasMouseClicked() {
   if (action == 'curva'){
     curvas[qtdCurvas - 1].push([mouseX, mouseY]);
   }
   if (action == 'adicionar'){
-      curvas[addButton].push([mouseX, mouseY]);
-      action = 'curva'
-      keyPressed()
+    curvas[indiceaadicionar].push([mouseX, mouseY]);
+    action = 'curva'
+    keyPressed()
+  }
+  if (action == 'remover'){
+    var ponto = findControlPoint(curvas[indicearemover], [mouseX, mouseY]);
+    if (ponto != null){
+      curvas[indicearemover].splice(ponto, 1)
+    }
+    if (curvas[indicearemover].length == 0){
+      curvas.splice(indicearemover, 1)
+    }
+    action = 'curva'
+    indicearemover = -1
+    keyPressed()
   }
   return false;
 }
@@ -65,9 +79,14 @@ function findControlPoint(curve, point){
   return null;
 }
 
-function adicionarBotao(indice){
+function adicionarPonto(indice){
   action = 'adicionar';
-  addButton = indice;
+  indiceaadicionar = indice;
+}
+
+function removerPonto(indice){
+  indicearemover = indice
+  action = 'remover'
 }
 
 function keyPressed(){
@@ -75,7 +94,7 @@ if (action == 'curva'){
   document.getElementById('lista-curvas').innerHTML = '';
   for (var i = 0; i < curvas.length; i++){
     document.getElementById('lista-curvas').innerHTML += '<li>' + 'Curva '+ (i + 1) + ':' + (curvas[i].length) +
-    '<button onClick="adicionarBotao(' + i + ')">adicionar ponto</button>' + '</li>';
+    '<button onClick="adicionarPonto(' + i + ')">adicionar ponto</button>' + '<button onClick="removerPonto(' + i + ')"> remover ponto </button>' + '</li>';
   }
     action = '';
     evaluationFactor = 1 / document.getElementById('evaluationFactor').value
@@ -83,7 +102,6 @@ if (action == 'curva'){
 }
 
 
-//Pegar o evaluationFactor do HTML
 window.onload=function(){var evaluationFactorHTML = document.getElementById('evaluationFactor');
 
 evaluationFactor.onchange = function(){
@@ -92,9 +110,6 @@ evaluationFactor.onchange = function(){
 }
 }
 
-//evaluationFactor = 1/(document.getElementById('evaluationFactor').value);
-//log(evaluationFactor);
-//evaluationFactor = 0.001;
 
 function interpolation(startPoint, endPoint, factor){
   return [ (1 - factor)*startPoint[0] + factor*endPoint[0] , (1 - factor)*startPoint[1] + factor*endPoint[1] ];
@@ -151,5 +166,4 @@ function draw(){
       line(curvas[index][j - 1][0], curvas[index][j - 1][1], curvas[index][j][0], curvas[index][j][1]);
     }
   }
-  console.log(evaluationFactor)
 }
