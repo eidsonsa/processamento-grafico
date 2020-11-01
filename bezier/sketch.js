@@ -1,22 +1,14 @@
-var action = 'curva';
+var action;
 var curvas = []
 var qtdCurvas = 0
 var atual;
 //Implementar pegar o indice atual direto do html
 var index = 0
+var addButton = -1;
 
 var pontosOn = true;
 var curvasOn = true;
 var poligonosOn = true;
-
-function chooseAction(act){
-  if (act == 'criarcurva'){
-    //action = 'curva';
-    curvas[qtdCurvas] = [];
-    atual = qtdCurvas;
-    qtdCurvas++;
-  }
-}
 
 function ativarPonto(){
   pontosOn = !pontosOn;
@@ -30,12 +22,19 @@ function ativarPoligono(){
   poligonosOn = !poligonosOn;
 }
 
-var pts = [];
+function chooseAction(act){
 
+  if (act == 'criarcurva'){
+    action = 'curva';
+    curvas[qtdCurvas] = [];
+    atual = qtdCurvas;
+    qtdCurvas++;
+  }
+}
 
 function canvasMouseClicked() {
   if (action == 'curva'){
-      curvas[qtdCurvas - 1].push([mouseX, mouseY]);
+    curvas[qtdCurvas - 1].push([mouseX, mouseY]);
   }
   if (action == 'adicionar'){
       curvas[addButton].push([mouseX, mouseY]);
@@ -43,29 +42,14 @@ function canvasMouseClicked() {
   }
   return false;
 }
-function mouseDragged(){
-  if(curvas[index].length > 0){
-    var indexControlPoint = findControlPoint(curvas[index],[mouseX,mouseY]);
-    if(indexControlPoint != null){
-      curvas[index][indexControlPoint][0] = mouseX;
-      curvas[index][indexControlPoint][1] = mouseY;
-    }
-  }
-  return false;
-} 
-var addButton = -1;
 
 function adicionarBotao(indice){
   action = 'adicionar';
   addButton = indice;
 }
-//Pegar o evaluationFactor do HTML
-//var evaluationFactor = 1/(document.getElementById('evaluationFactor').value);
-//log(evaluationFactor);
-evaluationFactor = 0.001;
 
 function keyPressed(){
-if (action == 'curva' ){
+if (action == 'curva'){
   document.getElementById('lista-curvas').innerHTML = '';
   for (var i = 0; i < curvas.length; i++){
     document.getElementById('lista-curvas').innerHTML += '<li>' + 'Curva '+ (i + 1) + ':' + (curvas[i].length) +
@@ -73,6 +57,29 @@ if (action == 'curva' ){
   }
     action = '';
  }
+}
+
+//Pegar o evaluationFactor do HTML
+//var evaluationFactor = 1/(document.getElementById('evaluationFactor').value);
+//log(evaluationFactor);
+evaluationFactor = 0.001;
+
+function interpolation(startPoint, endPoint, factor){
+  return [ (1 - factor)*startPoint[0] + factor*endPoint[0] , (1 - factor)*startPoint[1] + factor*endPoint[1] ];
+}
+
+function deCasteljau (stageControlPoints, factor){
+  //console.log(stageControlPoints)
+  if(stageControlPoints.length == 1){
+    return stageControlPoints[0];
+  }else {
+    var nextStageControlPoints = [];
+    for(cont = 0; cont < stageControlPoints.length -1;++cont){
+      var subControlPoint = interpolation(stageControlPoints[cont], stageControlPoints[cont+1], factor);
+      nextStageControlPoints.push(subControlPoint);
+    }
+     return deCasteljau(nextStageControlPoints, factor);
+  }
 }
 
 
@@ -113,31 +120,4 @@ function draw(){
     }
   }
 
-}
-
-function interpolation(startPoint, endPoint, factor){
-  return [ (1 - factor)*startPoint[0] + factor*endPoint[0] , (1 - factor)*startPoint[1] + factor*endPoint[1] ];
-}
-
-function deCasteljau (stageControlPoints, factor){
-  //console.log(stageControlPoints)
-  if(stageControlPoints.length == 1){
-    return stageControlPoints[0];
-  }else {
-    var nextStageControlPoints = [];
-    for(cont = 0; cont < stageControlPoints.length -1;++cont){
-      var subControlPoint = interpolation(stageControlPoints[cont], stageControlPoints[cont+1], factor);
-      nextStageControlPoints.push(subControlPoint);
-    }
-     return deCasteljau(nextStageControlPoints, factor);
-  }
-}
-
-function findControlPoint(curve, point){
-  for(cont = 0; cont < curve.length; ++cont){
-    if(Math.sqrt(Math.pow((curve[cont][0] - point[0]),2) + Math.pow((curve[cont][1] - point[1]),2) <= 1000)){  //1000 é o quanto o mouse pode se distanciar do ponto
-      return cont;
-    }
-  }
-  return null;
 }
