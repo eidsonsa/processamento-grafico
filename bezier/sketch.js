@@ -26,6 +26,7 @@ function ativarPoligono(){
 function chooseAction(act){
 
   if (act == 'criarcurva'){
+    evaluationFactor = 1 / document.getElementById('evaluationFactor').value
     action = 'curva';
     curvas[qtdCurvas] = [];
     atual = qtdCurvas;
@@ -97,7 +98,6 @@ if (action == 'curva'){
     '<button onClick="adicionarPonto(' + i + ')">adicionar ponto</button>' + '<button onClick="removerPonto(' + i + ')"> remover ponto </button>' + '</li>';
   }
     action = '';
-    evaluationFactor = 1 / document.getElementById('evaluationFactor').value
  }
 }
 
