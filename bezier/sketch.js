@@ -39,9 +39,30 @@ function canvasMouseClicked() {
   }
   if (action == 'adicionar'){
       curvas[addButton].push([mouseX, mouseY]);
-      action = ''
+      action = 'curva'
+      keyPressed()
   }
   return false;
+}
+
+function mouseDragged(){
+  if(curvas[index].length > 0){
+    var indexControlPoint = findControlPoint(curvas[index],[mouseX,mouseY]);
+    if(indexControlPoint != null){
+      curvas[index][indexControlPoint][0] = mouseX;
+      curvas[index][indexControlPoint][1] = mouseY;
+    }
+  }
+  return false;
+} 
+
+function findControlPoint(curve, point){
+  for(cont = 0; cont < curve.length; ++cont){
+    if(Math.sqrt(Math.pow((curve[cont][0] - point[0]),2) + Math.pow((curve[cont][1] - point[1]),2) <= 1000)){  //1000 é o quanto o mouse pode se distanciar do ponto
+      return cont;
+    }
+  }
+  return null;
 }
 
 function adicionarBotao(indice){
