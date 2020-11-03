@@ -101,6 +101,19 @@ if (action == 'curva'){
  }
 }
 
+function mudarIndice(direcao){
+  if (direcao == 'diminuir'){
+    if (index != 0 ){
+      index--;
+    }
+  }
+  if (direcao == 'aumentar'){
+    if (index < curvas.length - 1){
+      index++;
+    }
+  }
+}
+
 
 window.onload=function(){var evaluationFactorHTML = document.getElementById('evaluationFactor');
 
