@@ -1,3 +1,4 @@
+ 
 var action;
 var curvas = []
 var qtdCurvas = 0
@@ -29,8 +30,22 @@ function chooseAction(act){
     evaluationFactor = 1 / document.getElementById('evaluationFactor').value
     action = 'curva';
     curvas[qtdCurvas] = [];
-    atual = qtdCurvas;
+    index = qtdCurvas;
     qtdCurvas++;
+  }
+  if(act == 'deletarcurva'){
+    curvas.splice(index,1)
+    if(index > 0){
+      --index;
+    }
+    --qtdCurvas;
+    action = 'remover';
+  }
+  if(act == 'deletarponto'){
+    action = 'remover';
+  }
+  if(act == 'adicionarponto'){
+    action = 'adicionar';
   }
 }
 
@@ -41,33 +56,30 @@ function canvasMouseClicked() {
     curvas[qtdCurvas - 1].push([mouseX, mouseY]);
   }
   if (action == 'adicionar'){
-    curvas[indiceaadicionar].push([mouseX, mouseY]);
+    curvas[index].push([mouseX, mouseY]);
     action = 'curva'
-    keyPressed()
   }
   if (action == 'remover'){
-    var ponto = findControlPoint(curvas[indicearemover], [mouseX, mouseY]);
+    var ponto = findControlPoint(curvas[index], [mouseX, mouseY]);
     if (ponto != null){
-      curvas[indicearemover].splice(ponto, 1)
+      curvas[index].splice(ponto, 1)
     }
-    if (curvas[indicearemover].length == 0){
-      curvas.splice(indicearemover, 1)
+    if (curvas[index].length == 0){
+      curvas.splice(index, 1)
     }
-    action = 'curva'
-    indicearemover = -1
-    keyPressed()
   }
   return false;
 }
 
 function mouseDragged(){
-  if(curvas[index].length > 0){
+  if(curvas.length > 0 && curvas[index].length > 0){
     var indexControlPoint = findControlPoint(curvas[index],[mouseX,mouseY]);
     if(indexControlPoint != null){
       curvas[index][indexControlPoint][0] = mouseX;
       curvas[index][indexControlPoint][1] = mouseY;
     }
   }
+  action = 'grabPoint';
   return false;
 } 
 
@@ -153,30 +165,38 @@ function setup(){
 
 function draw(){
   background(212, 219, 245);
-  if (pontosOn && curvas.length > 0){
-    for (var j = 0; j < curvas[index].length; j++){
-      fill(0, 41, 250)
-      stroke(0, 41, 250);
-      ellipse(curvas[index][j][0], curvas[index][j][1], 10, 10);
+  for(var i = 0; i < curvas.length; ++i){
+    if (pontosOn && i < curvas.length){
+      for (var j = 0; j < curvas[i].length; j++){
+        fill(0, 41, 250)
+        stroke(0, 41, 250);
+        ellipse(curvas[i][j][0], curvas[i][j][1], 10, 10);
+      }
     }
-  }
-  if (curvasOn && curvas.length > index && curvas[index].length > 1){
-    fill(141, 7, 246);
-    stroke(141, 7, 246);
-    var currentPoint = curvas[index][0]
-    var lastPoint = curvas[index][curvas[index].length-1];
-    for (var factor = evaluationFactor; factor <= 1; factor += evaluationFactor){
-      var nextPoint = deCasteljau(curvas[index],factor);
-      line(currentPoint[0], currentPoint[1], nextPoint[0], nextPoint[1]);
-      currentPoint = nextPoint;
+    if (curvasOn && i < curvas.length && curvas[i].length > 1){
+      if(i == index){
+        fill('red');
+        stroke('red');
+      }else{
+        fill(141, 7, 246);
+        stroke(141, 7, 246);
+      }
+      var currentPoint = curvas[i][0]
+      var lastPoint = curvas[i][curvas[i].length-1];
+      for (var factor = evaluationFactor; factor <= 1; factor += evaluationFactor){
+        var nextPoint = deCasteljau(curvas[i],factor);
+        line(currentPoint[0], currentPoint[1], nextPoint[0], nextPoint[1]);
+        currentPoint = nextPoint;
+      }
+      line(currentPoint[0], currentPoint[1], lastPoint[0], lastPoint[1]);
     }
-    line(currentPoint[0], currentPoint[1], lastPoint[0], lastPoint[1]);
-  }
-  if (poligonosOn && curvas.length > index && curvas[index].length > 1){
-    for (var j = 1; j < curvas[index].length; j++){
-      fill(255, 255, 5);
-      stroke(255, 255, 5);
-      line(curvas[index][j - 1][0], curvas[index][j - 1][1], curvas[index][j][0], curvas[index][j][1]);
+    if (poligonosOn && i < curvas.length && curvas[i].length > 1){
+      for (var j = 1; j < curvas[i].length; j++){
+        fill(255, 255, 5);
+        stroke(255, 255, 5);
+        line(curvas[i][j - 1][0], curvas[i][j - 1][1], curvas[i][j][0], curvas[i][j][1]);
+      }
     }
   }
 }
+
