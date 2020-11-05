@@ -6,21 +6,68 @@
     <title>Bezier</title>
     <script src="p5.js"></script>
     <script src="sketch.js"></script>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Bezier</h1>
-    <div id="sketch-div"></div>
-    <input type="number" value = "100" id="evaluationFactor" min="1" max="500">
-    <button onClick="chooseAction('criarcurva')">criar curva</button>
-    <button onClick="chooseAction('deletarcurva')">deletar curva</button>
-    <button onClick="chooseAction('adicionarponto')">adicionar ponto</button>
-    <button onClick="chooseAction('deletarponto')">deletar ponto</button>
-    <button onClick="mudarIndice('diminuir')"><</button> 
-    <button onClick="mudarIndice('aumentar')">></button> 
-    <ul id="lista-curvas"></ul>
-    <input type="checkbox" id="mostrarPontos" onclick="ativarPonto()"> Esconder Pontos
-    <input type="checkbox" id="mostrarCurvas" onclick="ativarCurva()"> Esconder Curva
-    <input type="checkbox" id="mostrarCurvas" onclick="ativarPoligono()"> Esconder Polígono
+    <h1 id="titulo">Bezier</h1>
+    <div id="botoes">
+        <table id="tabela-botoes">
+            <tr>
+                <td>
+                    <button onClick="chooseAction('criarcurva')">Criar Curva</button>
+                </td>
+                <td>
+                    <button onClick="chooseAction('deletarcurva')">Deletar Curva</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onClick="chooseAction('adicionarponto')" >Adicionar Ponto</button>
+                </td>
+                <td>
+                    <button onClick="chooseAction('deletarponto')" >Deletar Ponto</button>
+                </td>
+            </tr>
+        </table>
+        <button onClick="mudarIndice('diminuir')" id="botao-seta"><</button>
+        <button onClick="mudarIndice('aumentar')" id="botao-seta">></button>
+    </div>
+    <div id="sketch-div">
+    </div>
+    <div id="configs-gerais">
+    <div id="container-configs">
+        <p id="titulo-ef"> evaluationFactor: </p>
+        <input type="number" value = "100" id="evaluationFactor" min="1" max="500"> 
+        <table id="tabela-ativar">
+            <tr>
+                <td>
+                    <input type="checkbox" id="mostrarPontos" onclick="ativarPonto()">
+                </td>
+                <td>
+                    <p>Esconder Pontos</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="mostrarCurvas" onclick="ativarCurva()">
+                </td>
+                <td>
+                    <p>Esconder Curva</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="mostrarCurvas" onclick="ativarPoligono()">
+                </td>
+                <td>
+                    <p>Esconder Polígono</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+    <p id="creditos">Feito por Anderson Cesar e Eidson Sá para o projeto 2 de Processamento Gráfico - 2020.3</p>
     
+
 </body>
 </html>

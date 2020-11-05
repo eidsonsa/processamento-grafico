@@ -1,7 +1,97 @@
 html, body {
   margin: 0;
   padding: 0;
+  background-color: rgb(10, 23, 71);
 }
 canvas {
   display: block;
+  border-radius: 6px;
+}
+
+div{
+  display: inline;
+  float: left;
+}
+
+#titulo{
+  text-align: center;
+  color: rgb(212, 219, 245)
+}
+
+#botoes{
+  float: left;
+  width: 20%;
+  padding-top: 300px;
+  text-align: center;
+}
+
+#tabela-botoes{
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+button{
+  background-color: rgb(212, 219, 245);
+  color: rgb(0, 41, 250);
+  border: none;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 6px;
+  width: 150px;
+  font-size: 15px;
+}
+
+#botao-seta{
+  width: 50px;
+  padding: 20px;
+}
+
+#sketch-div{
+  float: left;
+  width: 60%;
+
+}
+
+#evaluationFactor{
+  margin-bottom: 30px;
+}
+
+#configs-gerais{
+  float:left;
+  width: 20%;
+  padding-top: 150px;
+  text-align: center;
+}
+
+#tabela-ativar{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#container-configs{
+  background-color: rgb(212, 219, 245);
+  border-radius: 6px;
+  padding: 100px;
+}
+
+#container-configs p, h3{
+  color: rgb(0, 41, 250);
+  font-size: 20px;
+}
+
+input[type=checkbox] {
+  transform: scale(1.5);
+}
+
+input[type=number] {
+  transform: scale(1.5);
+}
+
+#creditos{
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  color: rgb(212, 219, 245)
 }

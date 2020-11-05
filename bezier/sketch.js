@@ -105,7 +105,7 @@ evaluationFactor.onchange = function(){
 
 //Setup do Canvas
 function setup(){
-  var canvas = createCanvas(700, 700);
+  var canvas = createCanvas(1200, 800);
   canvas.parent('sketch-div');
   canvas.mouseClicked(canvasMouseClicked);
   background(212, 219, 245);
@@ -125,8 +125,8 @@ function draw(){
     //Desenho das Curvas
     if (curvasOn && i < curvas.length && curvas[i] != null && curvas[i].length > 1){
       if(i == index){
-        fill('red');
-        stroke('red');  //A Curva Atual é Sempre a Vermelha.
+        fill(10, 23, 71);
+        stroke(10, 23, 71);  //A Curva Atual é Sempre a azul-escura.
       }else{
         fill(141, 7, 246);
         stroke(141, 7, 246);
