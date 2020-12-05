@@ -16,63 +16,48 @@ void setup() {
 // http://www.cs.toronto.edu/~jacobson/phong-demo/
 
 void draw() {
-  //background(0);
-  
-  //float dirX = (mouseX / float(width) - 0.5) * 2;
-  //float dirY = (mouseY / float(height) - 0.5) * 2;
-  
-  //directionalLight(204, 204, 204, -dirX, -dirY, 0);
-  
-  //translate(width/2 - 100, height/2, 0);
-  
-  //sphere(80);
-  
-  image(imgBaseKd, 0, 0);
-  
-  PVector posicaoLuz = new PVector(mouseX, mouseY, 0);
-  
- // loadPixels();
-  //imgBase.loadPixels();
-  
-  
-  
   for (int i = 0; i < height; i++){
     for (int j = 0; j < width; j++){
-      //-----------------------------------------------------------------------------------------------------
       int loc = j + i * width;
       int[] camera = {width / 2, height / 2};
       PVector mouseCameraL = new PVector (mouseX - camera[0], mouseY - camera[1],0).normalize();
-      PVector pixelNormal = new PVector (red(imgBaseKd.pixels[loc]),green(imgBaseKd.pixels[loc]),blue(imgBaseKd.pixels[loc])).normalize();
+      PVector pixelNormal = new PVector (red(imgBaseN.pixels[loc]),green(imgBaseN.pixels[loc]),blue(imgBaseN.pixels[loc])).normalize();
       PVector pixelCameraV = new PVector(j - camera[0], i - camera[1], 0).normalize();
+      //
+      PVector Kd;
+      if(mostrarDifusa){
+        Kd = new PVector(red(imgBaseKd.pixels[loc]),green(imgBaseKd.pixels[loc]),blue(imgBaseKd.pixels[loc])).normalize();
+      }else{
+        Kd = new PVector(0,0,0);
+      }
+      PVector Ks;
+      if(mostrarEspecular){
+        Ks = new PVector(red(imgBaseKs.pixels[loc]),green(imgBaseKs.pixels[loc]),blue(imgBaseKs.pixels[loc])).normalize();
+      }else{
+        Ks = new PVector(0,0,0);
+      }
       //
       loadPixels();
       pixels[loc] = phong(
-        color(255,255,255)/255,
-        imgBaseKd.pixels[loc]/255,
-        imgBaseN.pixels[loc]/255,
-        imgBaseKs.pixels[loc]/255,
+        new PVector(255,255,255).normalize(),
+        Kd,
+        Ks,
         mouseCameraL,
         pixelNormal, 
         calculateR(pixelNormal, mouseCameraL),
         pixelCameraV
        ); 
       updatePixels();      
-      //int loc = j + i * width;
-      //pixels[loc] = color(0,0,0);
-      
     }
   }
-  // R = L - 2*(dot(N, L))*N posicaoLuz.sub((normal.mult((normal.normalize()).dot(posicaoLuz.normalize()))).mult(2));
-
-  
- // updatePixels();
 }
 public PVector calculateR (PVector N, PVector L){
   return L.sub(N.mult(max(N.dot(L),0)*2)).normalize();
 }
-public color phong(color light, color kd, color ka, color ks, PVector mouseCameraL, PVector pixelNormal, PVector R, PVector pixelCameraV){
-  float difusa = kd*pixelNormal.dot(mouseCameraL);
-  float ambiente = ka*light;
-  float especular = ks*pow(R.dot(pixelCameraV),9);
-  return int(255*(ambiente + difusa + especular)); //<>//
+//
+public color phong(PVector light, PVector kd, PVector ks, PVector mouseCameraL, PVector pixelNormal, PVector R, PVector pixelCameraV){
+  PVector difusa = kd.mult(max(-1*pixelNormal.dot(mouseCameraL),0));
+  PVector especular = ks.mult(pow(R.dot(pixelCameraV),9));
+  PVector cor = difusa.add(especular).normalize();
+  return color(((cor.x)*(light.x))*255,((cor.y)*(light.y))*255,((cor.z)*(light.z))*255); //<>//
 }
