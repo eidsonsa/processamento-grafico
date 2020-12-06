@@ -1,7 +1,7 @@
 PImage imgBaseKd;
 PImage imgBaseN;
 PImage imgBaseKs;
-boolean mostrarDifusa = true;
+boolean mostrarDifusa = false;
 boolean mostrarEspecular = true;
 float Ia = 0.5;
 float n = 10;
@@ -19,28 +19,32 @@ void setup() {
 // http://www.cs.toronto.edu/~jacobson/phong-demo/
 
 void draw() {
-  int[] camera = {width/2, height/2};
-  print(new PVector (float((mouseX - camera[0])), float((mouseY - camera[1])), 1) + "\n") ;
+  float[] camera = {width/2, height/2};
+  //print(new PVector ((mouseX - camera[0])/(camera[0]/2), ((mouseY - camera[1])/(camera[1]/2)), 1).normalize() + " " + "\n") ;
   for (int i = 0; i < height; i++){
     for (int j = 0; j < width; j++){
       int loc = j + i * width;
 
-      PVector mouseCameraL = new PVector (float((mouseX - camera[0])/(camera[0]/2)), float((mouseY - camera[1])/(camera[1]/2)), 1).normalize();
-      PVector pixelCameraV = new PVector(float((j - camera[0])/(camera[0]/2)), float((i - camera[1])/(camera[1]/2)), 1).normalize();
+      PVector mouseCameraL = new PVector ((mouseX - camera[0])/(camera[0]/2), ((mouseY - camera[1])/(camera[1]/2)), 1).normalize();
+      mouseCameraL = PVector.mult(mouseCameraL, 2);
+      mouseCameraL = new PVector(mouseCameraL.x - 1, mouseCameraL.y - 1, mouseCameraL.z - 1); 
+      PVector pixelCameraV = new PVector(((j - camera[0])/(camera[0]/2)), ((i - camera[1])/(camera[1]/2)), 1).normalize();
+      pixelCameraV = PVector.mult(pixelCameraV, 2);
+      pixelCameraV = new PVector(pixelCameraV.x - 1, pixelCameraV.y - 1, pixelCameraV.z - 1);
       
       
-      PVector pixelNormal = new PVector (red(imgBaseN.pixels[loc])/255,green(imgBaseN.pixels[loc])/255,blue(imgBaseN.pixels[loc])/255);
+      PVector pixelNormal = new PVector (red(imgBaseN.pixels[loc]),green(imgBaseN.pixels[loc]),blue(imgBaseN.pixels[loc])).normalize();
       
       //
       PVector Kd;
       if(mostrarDifusa){
-        Kd = new PVector(red(imgBaseKd.pixels[loc])/255,green(imgBaseKd.pixels[loc])/255,blue(imgBaseKd.pixels[loc])/255);
+        Kd = new PVector(red(imgBaseKd.pixels[loc]),green(imgBaseKd.pixels[loc]),blue(imgBaseKd.pixels[loc])).normalize();
       }else{
         Kd = new PVector(0,0,0);
       }
       PVector Ks;
       if(mostrarEspecular){
-        Ks = new PVector(red(imgBaseKs.pixels[loc])/255,green(imgBaseKs.pixels[loc])/255,blue(imgBaseKs.pixels[loc])/255);
+        Ks = new PVector(red(imgBaseKs.pixels[loc]),green(imgBaseKs.pixels[loc]),blue(imgBaseKs.pixels[loc])).normalize();
       }else{
         Ks = new PVector(0,0,0);
       }
