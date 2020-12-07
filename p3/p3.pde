@@ -1,7 +1,7 @@
 PImage imgBaseKd;
 PImage imgBaseN;
 PImage imgBaseKs;
-boolean mostrarDifusa = true;
+boolean mostrarDifusa = false;
 boolean mostrarEspecular = true;
 float Ia = 0.5;
 float n = 10;
@@ -29,7 +29,7 @@ void draw() {
     for (int j = 0; j < width; j++){
       int loc = j + i * width;
 
-      PVector pixelCameraV = new PVector(((j - camera[0])/(camera[0])), ((i - camera[1])/(camera[1])), 1);
+      PVector pixelCameraV = new PVector(((i - camera[1])/(camera[1])),((j - camera[0])/(camera[0])), 1);
   
       PVector pixelNormal = new PVector (red(imgBaseN.pixels[loc]) / 255.0, green(imgBaseN.pixels[loc]) / 255.0, blue(imgBaseN.pixels[loc]) / 255.0);
       //print(pixelNormal + " ");
