@@ -3,8 +3,7 @@ PImage imgBaseN;
 PImage imgBaseKs;
 boolean mostrarDifusa = true;
 boolean mostrarEspecular = true;
-float Ia = 0.5;
-float n = 10;
+PVector light = new PVector(255, 255, 255);
 
 void setup() {
   size(410, 736, P3D);
@@ -45,7 +44,7 @@ void draw() {
 
       loadPixels();
       pixels[loc] = phong(
-        new PVector(255 / 255.0, 255 / 255.0, 255 / 255.0),
+        new PVector(light.x / 255.0, light.y / 255.0, light.z / 255.0),
         Kd,
         Ks,
         mouseCameraL,
@@ -69,7 +68,7 @@ public color phong(PVector light, PVector kd, PVector ks, PVector mouseCameraL, 
   float produtoInterno = max(PVector.dot(pixelNormal,mouseCameraL), 0);
   PVector difusa = PVector.mult(kd, produtoInterno);
   float componenteEspecular = max(PVector.dot(pixelCameraV, R), 0);
-  PVector especular = PVector.mult(ks,(pow(componenteEspecular,9)));
-  PVector cor = PVector.add(PVector.div(difusa,2), PVector.div(especular,2));
+  PVector especular = PVector.mult(ks,(pow(componenteEspecular, 9)));
+  PVector cor = PVector.add(PVector.div(difusa,2), PVector.div(especular, 2));
   return color(((cor.x)*(light.x))*255,((cor.y)*(light.y))*255,((cor.z)*(light.z))*255); //<>//
 }
